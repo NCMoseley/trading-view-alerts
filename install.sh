@@ -1,0 +1,1 @@
+npm i && npm i ngrok --location=global && node server.js&& osascript -e 'tell application "Terminal" to do script "ngrok http 8080"'

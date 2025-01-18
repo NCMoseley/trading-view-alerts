@@ -1,0 +1,47 @@
+[
+  {
+    "symbol": "SOLUSD",
+    "tf": "5m",
+    "direction": "Short",
+    "price": "253.47",
+    "tp": "252.27",
+    "date": "2025-01-18T16:40:00+0000",
+    "situation": "1v1"
+  },
+  {
+    "symbol": "SOLUSD",
+    "tf": "5m",
+    "direction": "Short",
+    "price": "246.35",
+    "tp": "244.75",
+    "date": "2025-01-18T16:50:00+0000",
+    "situation": "1v1"
+  },
+  {
+    "symbol": "SOLUSD",
+    "tf": "5m",
+    "direction": "Long",
+    "price": "246.02",
+    "tp": "248.28",
+    "date": "2025-01-18T17:05:00+0000",
+    "situation": "1v1"
+  },
+  {
+    "symbol": "SOLUSD",
+    "tf": "5m",
+    "direction": "Long",
+    "price": "246.41",
+    "tp": "247.51",
+    "date": "2025-01-18T17:15:00+0000",
+    "situation": "1v1"
+  },
+  {
+    "symbol": "SOLUSD",
+    "tf": "5m",
+    "direction": "Short",
+    "price": "250.92",
+    "tp": "246.6",
+    "date": "2025-01-18T17:25:00+0000",
+    "situation": "1v1"
+  }
+]

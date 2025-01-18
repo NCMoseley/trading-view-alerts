@@ -1,0 +1,139 @@
+// This Pine Script™ code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © ncmoseley28
+
+//@version=6
+indicator('Engulfing Candle 1v1 0.0.2', overlay = true)
+
+percentageDiffThreshold = input.float(0.2, title="Percentage Move", minval=0.1)
+
+// Convert timeframe
+timeframe = str.tostring(timeframe.period)
+
+if timeframe.isintraday and timeframe.multiplier >= 60
+    timeframe := str.tostring(timeframe.multiplier / 60) + 'H'
+    timeframe
+
+if timeframe.isintraday and timeframe.multiplier < 60
+    timeframe := str.tostring(timeframe.multiplier) + 'm'
+    timeframe
+
+if timeframe == '1.2H'
+    timeframe := '72m'
+    timeframe
+
+if timeframe == '1.3333333333H'
+    timeframe := '80m'
+    timeframe
+
+if timeframe == '1.5H'
+    timeframe := '90m'
+    timeframe
+
+if timeframe == '1.6H'
+    timeframe := '96m'
+    timeframe
+
+if timeframe == '2.4H'
+    timeframe := '144m'
+    timeframe
+
+if timeframe == '2.6666666667H'
+    timeframe := '160m'
+    timeframe
+
+if timeframe == '4.8H'
+    timeframe := '288m'
+    timeframe
+
+// Check previous candle
+longIsBearish = close[1] < open[1]
+longIsBullish = close > open[1]
+shortIsBullish = close[1] > open[1]
+shortIsBearish = close < open[1]
+
+// Capture open[1] and low[1] values
+openPrev = open[1]
+highPrev = high[1]
+lowPrev = low[1]
+
+// Determine significant digits for price
+sigDigits = 0
+if openPrev < 1
+    sigDigits := 4
+    sigDigits
+else if openPrev < 10
+    sigDigits := 3
+    sigDigits
+else if openPrev < 100
+    sigDigits := 2
+    sigDigits
+else
+    sigDigits := 2
+    sigDigits
+
+// Calculate target1618 using Fibonacci sequence with dynamic rounding
+longTarget1618 = math.round(openPrev + (openPrev - lowPrev) * 0.618, sigDigits)
+shortTarget1618 = math.round(openPrev - (highPrev - openPrev) * 0.618, sigDigits)
+
+// Define entryPrice as open[1] of the bearish candle
+entryPrice = open[1]
+
+// Calculate percentage difference between entryPrice and target1618
+longPercentageDifference = (longTarget1618 - entryPrice) / entryPrice * 100
+shortPercentageDifference = (entryPrice - shortTarget1618) / entryPrice * 100
+// Condition for percentage difference being 0.4 or greater
+longPercentageDiffCondition = longPercentageDifference >= percentageDiffThreshold
+shortPercentageDiffCondition = shortPercentageDifference >= percentageDiffThreshold
+
+// Condition for bullish candle breaking above bearish candle
+bullishBreakAboveBearish = longIsBearish and longIsBullish and close > open[1]
+// Condition for bearish candle breaking below bullish candle
+bearishBreakBelowBullish = shortIsBullish and shortIsBearish and close < open[1]
+
+string direction = ''
+var lineLength = 30
+var labelPos = lineLength / 2
+var line longEntryLine = na
+var line longTargetLine = na
+var line shortEntryLine = na
+var line shortTargetLine = na
+
+if bullishBreakAboveBearish
+    direction := 'Long'
+    direction
+
+    if longPercentageDiffCondition
+        label.new(bar_index, high, '🎯 ' + str.tostring(math.round(longPercentageDifference, 2)) + '%' + '\nX ' + str.tostring(longTarget1618) + '\nE ' + str.tostring(entryPrice), style = label.style_label_down, color = color.green, textcolor = color.white)
+
+        label.new(bar_index + labelPos , entryPrice, "Entry: " + str.tostring(entryPrice), color=color.blue, style = label.style_label_up, textcolor=color.white)
+        longEntryLine := line.new(bar_index, entryPrice, bar_index + lineLength, entryPrice, color=color.blue, width=1)
+
+        label.new(bar_index + labelPos, longTarget1618, "Target: " + str.tostring(longTarget1618), color=color.green, textcolor=color.white)
+        longTargetLine := line.new(bar_index, longTarget1618, bar_index + lineLength, longTarget1618, color=color.green, width=1)
+
+if bearishBreakBelowBullish
+    direction := 'Short'
+    direction
+
+    if shortPercentageDiffCondition
+        label.new(bar_index, low, '🎯 ' + str.tostring(math.round(shortPercentageDifference, 2)) + '%' + '\nE ' + str.tostring(entryPrice) + '\nX ' + str.tostring(shortTarget1618), style = label.style_label_up, color = color.red, textcolor = color.white)
+
+        label.new(bar_index + labelPos , entryPrice, "Entry: " + str.tostring(entryPrice), color=color.purple, style = label.style_label_down, textcolor=color.white)
+        shortEntryLine := line.new(bar_index, entryPrice, bar_index + lineLength, entryPrice, color=color.purple, width=1)
+
+        label.new(bar_index + labelPos, shortTarget1618, "Target: " + str.tostring(shortTarget1618), color=color.red, style = label.style_label_up, textcolor=color.white)
+        shortTargetLine := line.new(bar_index, shortTarget1618, bar_index + lineLength, shortTarget1618, color=color.red, width=1)
+
+// Alert condition for main condition
+alertcondition(bullishBreakAboveBearish, title = 'Bullish Opp', message = 'Bullish Opportunity')
+
+// Sending notifications with JSON-formatted alert message
+if bullishBreakAboveBearish and longPercentageDiffCondition
+    alert('{"symbol":"' + syminfo.ticker + '", "tf":"' + timeframe + '", "direction":"' + str.tostring(direction) + '", "price":"' + str.tostring(entryPrice) + '", "tp":"' + str.tostring(longTarget1618) + '", "date":"' + str.format_time(timenow) + '", "situation":"' + '1v1' + '"}', alert.freq_once_per_bar_close)
+
+// Alert condition for main condition
+alertcondition(bearishBreakBelowBullish, title = 'Bearish Opp', message = 'Bearish Opportunity')
+
+// Sending notifications with JSON-formatted alert message
+if bearishBreakBelowBullish and shortPercentageDiffCondition
+    alert('{"symbol":"' + syminfo.ticker + '", "tf":"' + timeframe + '", "direction":"' + str.tostring(direction) + '", "price":"' + str.tostring(entryPrice) + '", "tp":"' + str.tostring(shortTarget1618) + '", "date":"' + str.format_time(timenow) + '", "situation":"' + '1v1' + '"}', alert.freq_once_per_bar_close)
