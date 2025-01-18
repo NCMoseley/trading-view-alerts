@@ -49,6 +49,13 @@ app.post('/tradingview-alert', (req, res) => {
 	}
 });
 
+app.use('*', (req, res) => {
+	res.status(404).json({
+		error: 'Not Found',
+		message: `The requested path ${req.originalUrl} does not exist on this server`
+	});
+});
+
 app.listen(PORT, () => {
 	console.log(`Server is running on http://localhost:${PORT}`);
 });
