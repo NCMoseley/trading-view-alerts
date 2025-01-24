@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Alerts Viewer</title>
+  </head>
+  <body>
+    <h1>Alerts</h1>
+    <div id="alerts"></div>
+
+    <script>
+      fetch(
+        "https://3c77-2a04-ee41-2-e136-7815-1a3c-10d5-15fe.ngrok-free.app/alerts"
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          const alertsDiv = document.getElementById("alerts");
+          data.alerts.forEach((alert) => {
+            alertsDiv.innerHTML += `
+                        <div>
+                            <p>Received at: ${alert.received_at}</p>
+                            <pre>${JSON.stringify(alert, null, 2)}</pre>
+                        </div>
+                    `;
+          });
+        })
+        .catch((error) => console.error("Error:", error));
+    </script>
+  </body>
+</html>

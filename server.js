@@ -1,11 +1,21 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs').promises;
+const WebSocket = require('ws');
+const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
 app.use(bodyParser.json());
+app.use(express.static('public'));
+
+// Option 1: Enable CORS for all routes
+app.use(cors({
+	origin: '*',  // Allow all origins
+	methods: ['GET', 'POST'],  // Allow GET and POST methods
+	allowedHeaders: ['Content-Type']  // Allow Content-Type header
+}));
 
 async function appendToJsonFile(newData, filename) {
 	try {
@@ -49,12 +59,65 @@ app.post('/tradingview-alert', (req, res) => {
 	}
 });
 
+app.get('/alerts', async (req, res) => {
+	try {
+		const { limit = 10, offset = 0 } = req.query;
+		const fileContent = await fs.readFile('alerts.json', 'utf8');
+		const alerts = JSON.parse(fileContent);
+
+		// Get subset of alerts based on limit and offset
+		const paginatedAlerts = alerts.slice(offset, offset + parseInt(limit));
+
+		res.json({
+			total: alerts.length,
+			alerts: paginatedAlerts
+		});
+	} catch (error) {
+		console.error('Error reading alerts:', error);
+		res.status(500).json({
+			error: 'Internal server error',
+			message: 'Could not retrieve alerts'
+		});
+	}
+});
+
 app.use('*', (req, res) => {
 	res.status(404).json({
 		error: 'Not Found',
 		message: `The requested path ${req.originalUrl} does not exist on this server`
 	});
 });
+
+function connectBinanceWebSocket() {
+	const ws = new WebSocket('wss://stream.binance.com:9443/ws/solusdt@trade');
+
+	ws.on('open', () => {
+		console.log('Connected to Binance WebSocket');
+	});
+
+	ws.on('message', (data) => {
+		const trade = JSON.parse(data);
+		console.log(`
+			Symbol: ${trade.s}
+			Price: ${trade.p}
+			Quantity: ${trade.q}
+			Buyer was maker: ${trade.m}
+			Trade time: ${new Date(trade.T).toLocaleString()}
+		`);
+	});
+
+	ws.on('close', () => {
+		console.log('WebSocket connection closed. Reconnecting...');
+		setTimeout(connectBinanceWebSocket, 5000);
+	});
+
+	ws.on('error', (error) => {
+		console.error('WebSocket error:', error);
+		ws.close();
+	});
+}
+
+// connectBinanceWebSocket();
 
 app.listen(PORT, () => {
 	console.log(`Server is running on http://localhost:${PORT}`);
