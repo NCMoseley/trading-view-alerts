@@ -17,6 +17,39 @@ app.use(cors({
 	allowedHeaders: ['Content-Type']  // Allow Content-Type header
 }));
 
+// Save price data to file
+let lastMinute = new Date().getMinutes();
+let currentMinutePrices = [];
+
+const updatePriceData = async (price, tradeTime) => {
+	try {
+		const currentMinute = new Date(tradeTime).getMinutes();
+
+		if (currentMinute !== lastMinute) {
+			// Calculate average price for the last minute
+			const avgPrice = currentMinutePrices.reduce((a, b) => a + b, 0) / currentMinutePrices.length;
+
+			const priceData = {
+				price: avgPrice,
+				time: tradeTime,
+				formattedTime: new Date(tradeTime).toLocaleTimeString()
+			};
+
+			console.log("Average price for the last minute:", avgPrice);
+			await appendToJsonFile(priceData, 'priceData.json');
+
+			// Reset for next minute
+			currentMinutePrices = [price];
+			lastMinute = currentMinute;
+		} else {
+			// Collect prices within the minute
+			currentMinutePrices.push(price);
+		}
+	} catch (error) {
+		console.error('Error saving price data:', error);
+	}
+};
+
 async function appendToJsonFile(newData, filename) {
 	try {
 		let data = [];
@@ -51,7 +84,7 @@ app.post('/tradingview-alert', (req, res) => {
 			}
 		}
 
-		appendToJsonFile(alertData, 'alerts.json');
+		appendToJsonFile(alertData, 'public/alerts.json');
 		res.status(200).send('Alert received');
 	} catch (error) {
 		console.error('Error processing alert:', error);
@@ -62,7 +95,7 @@ app.post('/tradingview-alert', (req, res) => {
 app.get('/alerts', async (req, res) => {
 	try {
 		const { limit = 10, offset = 0 } = req.query;
-		const fileContent = await fs.readFile('alerts.json', 'utf8');
+		const fileContent = await fs.readFile('public/alerts.json', 'utf8');
 		const alerts = JSON.parse(fileContent);
 
 		// Get subset of alerts based on limit and offset
@@ -88,36 +121,40 @@ app.use('*', (req, res) => {
 	});
 });
 
-function connectBinanceWebSocket() {
-	const ws = new WebSocket('wss://stream.binance.com:9443/ws/solusdt@trade');
+function connectWebSocket() {
+	const ws = new WebSocket("wss://ws-feed.exchange.coinbase.com");
 
-	ws.on('open', () => {
-		console.log('Connected to Binance WebSocket');
-	});
+	ws.onopen = () => {
+		console.log("Connected to Coinbase WebSocket");
+		ws.send(
+			JSON.stringify({
+				type: "subscribe",
+				product_ids: ["SOL-USD"],
+				channels: ["matches"],
+			})
+		);
+	};
 
-	ws.on('message', (data) => {
-		const trade = JSON.parse(data);
-		console.log(`
-			Symbol: ${trade.s}
-			Price: ${trade.p}
-			Quantity: ${trade.q}
-			Buyer was maker: ${trade.m}
-			Trade time: ${new Date(trade.T).toLocaleString()}
-		`);
-	});
+	ws.onmessage = (event) => {
+		const trade = JSON.parse(event.data);
+		if (trade.type === "match") {
+			const price = parseFloat(trade.price);
+			console.log(`Price update: ${price}`);
+		}
+	};
 
-	ws.on('close', () => {
-		console.log('WebSocket connection closed. Reconnecting...');
-		setTimeout(connectBinanceWebSocket, 5000);
-	});
+	ws.onerror = (error) => {
+		console.error("WebSocket error:", error);
+		setTimeout(connectWebSocket, 5000); // Reconnect after 5 seconds
+	};
 
-	ws.on('error', (error) => {
-		console.error('WebSocket error:', error);
-		ws.close();
-	});
+	ws.onclose = () => {
+		console.log("WebSocket connection closed");
+		setTimeout(connectWebSocket, 5000); // Reconnect after 5 seconds
+	};
 }
 
-// connectBinanceWebSocket();
+connectWebSocket();
 
 app.listen(PORT, () => {
 	console.log(`Server is running on http://localhost:${PORT}`);

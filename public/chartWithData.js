@@ -1,141 +1,81 @@
 // Alerts data
 const alertsData = [
 	{
-		"symbol": "SOLUSD",
-		"tf": "5m",
-		"direction": "Short",
-		"price": "264.39",
-		"tp": "264.01",
-		"date": "2025-01-24T08:50:04+0000",
-		"situation": "1v1"
-	},
-	{
-		"symbol": "SOLUSDT.P",
-		"tf": "9m",
-		"direction": "Short",
-		"price": "264.066",
-		"tp": "263.55",
-		"date": "2025-01-24T09:09:00+0000",
-		"situation": "1v1"
-	},
-	{
-		"symbol": "SOLUSDT.P",
-		"tf": "10m",
-		"direction": "Short",
-		"price": "263.914",
-		"tp": "263.3",
-		"date": "2025-01-24T09:10:00+0000",
-		"situation": "1v1"
-	},
-	{
-		"symbol": "SOLUSD",
-		"tf": "5m",
-		"direction": "Long",
-		"price": "263.87",
-		"tp": "264.08",
-		"date": "2025-01-24T09:15:10+0000",
-		"situation": "1v1"
-	},
-	{
-		"symbol": "SOLUSDT.P",
-		"tf": "6m",
-		"direction": "Long",
-		"price": "263.812",
-		"tp": "264.07",
-		"date": "2025-01-24T09:18:00+0000",
-		"situation": "1v1"
-	},
-	{
-		"symbol": "SOLUSDT.P",
-		"tf": "3m",
-		"direction": "",
-		"price": "263.915",
-		"tp": "264.06",
-		"date": "2025-01-24T09:21:00+0000",
-		"situation": "1v1"
-	},
-	{
-		"symbol": "SOLUSDT.P",
-		"tf": "9m",
-		"direction": "Short",
-		"price": "263.624",
-		"tp": "263.08",
-		"date": "2025-01-24T09:27:00+0000",
-		"situation": "1v1"
-	},
-	{
-		"symbol": "SOLUSDT.P",
-		"tf": "10m",
-		"direction": "Short",
-		"price": "263.522",
-		"tp": "262.92",
-		"date": "2025-01-24T09:30:00+0000",
-		"situation": "1v1"
-	},
-	{
-		"symbol": "SOLUSD",
-		"tf": "5m",
-		"direction": "Short",
-		"price": "263.72",
-		"tp": "263.4",
-		"date": "2025-01-24T09:30:05+0000",
-		"situation": "1v1"
-	},
-	{
 		"symbol": "SOLUSDT.P",
 		"tf": "12m",
-		"direction": "Short",
-		"price": "263.675",
-		"tp": "263.17",
-		"date": "2025-01-24T09:36:00+0000",
+		"direction": "Long",
+		"price": "264.059",
+		"tp": "264.34",
+		"date": "2025-01-24T13:36:00+0000",
 		"situation": "1v1"
 	},
 	{
 		"symbol": "SOLUSDT.P",
 		"tf": "3m",
 		"direction": "",
-		"price": "263.086",
-		"tp": "263.29",
-		"date": "2025-01-24T09:36:00+0000",
-		"situation": "1v1"
-	},
-	{
-		"symbol": "SOLUSD",
-		"tf": "5m",
-		"direction": "Long",
-		"price": "263.32",
-		"tp": "263.56",
-		"date": "2025-01-24T09:40:06+0000",
+		"price": "265.514",
+		"tp": "265.21",
+		"date": "2025-01-24T13:39:00+0000",
 		"situation": "1v1"
 	},
 	{
 		"symbol": "SOLUSDT.P",
-		"tf": "9m",
-		"direction": "Long",
-		"price": "263.465",
-		"tp": "263.92",
-		"date": "2025-01-24T09:45:00+0000",
+		"tf": "3m",
+		"direction": "",
+		"price": "265.406",
+		"tp": "265.59",
+		"date": "2025-01-24T13:45:00+0000",
 		"situation": "1v1"
 	},
 	{
 		"symbol": "SOLUSDT.P",
 		"tf": "6m",
-		"direction": "Short",
-		"price": "263.394",
-		"tp": "262.79",
-		"date": "2025-01-24T09:48:00+0000",
+		"direction": "Long",
+		"price": "265.903",
+		"tp": "266.39",
+		"date": "2025-01-24T13:48:00+0000",
 		"situation": "1v1"
 	},
 	{
-		"symbol": "SOLUSD",
-		"tf": "5m",
-		"direction": "Short",
-		"price": "263.67",
-		"tp": "263.55",
-		"date": "2025-01-24T09:50:10+0000",
+		"symbol": "SOLUSDT.P",
+		"tf": "8m",
+		"direction": "Long",
+		"price": "265.903",
+		"tp": "266.45",
+		"date": "2025-01-24T13:52:00+0000",
+		"situation": "1v1"
+	},
+	{
+		"symbol": "SOLUSDT.P",
+		"tf": "1H",
+		"direction": "Long",
+		"price": "266.674",
+		"tp": "268.22",
+		"date": "2025-01-24T14:00:00+0000",
+		"situation": "1v1"
+	},
+	{
+		"symbol": "SOLUSDT.P",
+		"tf": "3m",
+		"direction": "",
+		"price": "266.847",
+		"tp": "266.54",
+		"date": "2025-01-24T14:06:00+0000",
+		"situation": "1v1"
+	},
+	{
+		"symbol": "SOLUSDT.P",
+		"tf": "6m",
+		"direction": "Long",
+		"price": "266.847",
+		"tp": "267.02",
+		"date": "2025-01-24T14:12:00+0000",
 		"situation": "1v1"
 	}
 ];
+
+// Price data array to store historical prices
+const priceData = [];
 
 // Initialize the chart with two datasets
 const ctx = document.getElementById("priceChart").getContext("2d");
@@ -152,25 +92,27 @@ const chart = new Chart(ctx, {
 			},
 			{
 				label: "Alerts",
-				data: [], // Start with empty data
+				data: [],
 				backgroundColor: function (context) {
 					if (context.raw && context.raw.direction) {
-						return context.raw.direction.toLowerCase() === "long"
-							? "green"
-							: "red";
+						return context.raw.direction.toLowerCase() === "long" ? "rgba(0, 255, 0, 0.8)" : "rgba(255, 0, 0, 0.8)";
+					}
+					return "rgba(255, 0, 0, 0.8)";
+				},
+				borderColor: function (context) {
+					if (context.raw && context.raw.direction) {
+						return context.raw.direction.toLowerCase() === "long" ? "green" : "red";
 					}
 					return "red";
 				},
-				pointStyle: function (context) {
-					return "triangle";
-				},
+				pointStyle: 'triangle',
 				rotation: function (context) {
 					if (context.raw && context.raw.direction) {
 						return context.raw.direction.toLowerCase() === "long" ? 0 : 180;
 					}
-					return 0;
+					return 180;
 				},
-				pointRadius: 8,
+				pointRadius: 10,
 				showLine: false,
 			},
 		],
@@ -240,8 +182,9 @@ const chart = new Chart(ctx, {
 					label: function (context) {
 						if (context.datasetIndex === 1) {
 							const alert = context.raw;
-							return `${alert.tf} | ${alert.direction} | TP: ${alert.tp
-								} | ${new Date(alert.date).toLocaleString()}`;
+							const alertTime = new Date(alert.date);
+							const formattedTime = formatTimeForChart(alertTime);
+							return `${alert.tf} | ${alert.direction} | TP: ${alert.tp} | ${formattedTime}`;
 						}
 						return `Price: $${context.raw}`;
 					},
@@ -274,170 +217,178 @@ const chart = new Chart(ctx, {
 	},
 });
 
-// Load saved data from localStorage
-function loadSavedData() {
-	try {
-		const savedData = JSON.parse(localStorage.getItem("chartData") || "{}");
-		if (savedData.labels) {
-			chart.data.labels = savedData.labels;
-			chart.data.datasets[0].data = savedData.priceData;
-			chart.data.datasets[1].data = savedData.alertData;
+// Initialize IndexedDB
+let db;
+const dbName = "tradingViewDB";
+const request = indexedDB.open(dbName, 1);
+
+request.onerror = (event) => {
+	console.error("Database error:", event.target.error);
+};
+
+request.onupgradeneeded = (event) => {
+	db = event.target.result;
+
+	// Create stores if they don't exist
+	if (!db.objectStoreNames.contains('priceData')) {
+		const priceStore = db.createObjectStore('priceData', { keyPath: 'time' });
+		priceStore.createIndex('time', 'time', { unique: true });
+	}
+
+	if (!db.objectStoreNames.contains('alerts')) {
+		const alertStore = db.createObjectStore('alerts', { keyPath: 'date' });
+		alertStore.createIndex('date', 'date', { unique: true });
+	}
+};
+
+request.onsuccess = (event) => {
+	db = event.target.result;
+	loadPriceData();
+	loadAllAlerts();
+};
+
+// Save price data to IndexedDB
+function savePriceData(pricePoint) {
+	if (!db) return;
+
+	const transaction = db.transaction(['priceData'], 'readwrite');
+	const store = transaction.objectStore('priceData');
+	store.put(pricePoint);
+}
+
+// Load price data from IndexedDB
+function loadPriceData() {
+	if (!db) return;
+
+	const transaction = db.transaction(['priceData'], 'readonly');
+	const store = transaction.objectStore('priceData');
+	const request = store.getAll();
+
+	request.onsuccess = () => {
+		const savedPriceData = request.result;
+		if (savedPriceData.length > 0) {
+			// Sort by time
+			savedPriceData.sort((a, b) => new Date(a.time) - new Date(b.time));
+
+			// Update chart data
+			chart.data.labels = savedPriceData.map(data => data.formattedTime);
+			chart.data.datasets[0].data = savedPriceData.map(data => data.price);
 			chart.update();
 		}
-	} catch (error) {
-		console.error("Error loading saved data:", error);
-	}
+	};
 }
 
-// Save data to localStorage
-function saveChartData() {
-	try {
-		const dataToSave = {
-			labels: chart.data.labels,
-			priceData: chart.data.datasets[0].data,
-			alertData: chart.data.datasets[1].data,
-			timestamp: new Date().getTime(),
-		};
-		localStorage.setItem("chartData", JSON.stringify(dataToSave));
-	} catch (error) {
-		console.error("Error saving data:", error);
+// Function to format time consistently in 24-hour format
+function formatTimeForChart(date, shift = false) {
+	const d = new Date(date);
+	// For alerts, shift time 1 hour back
+	if (shift) {
+		d.setHours(d.getHours() - 1);
 	}
+	// Ensure 24-hour format with padded zeros
+	const hours = d.getHours().toString().padStart(2, '0');
+	const minutes = d.getMinutes().toString().padStart(2, '0');
+	const seconds = d.getSeconds().toString().padStart(2, '0');
+	return `${hours}:${minutes}:${seconds}`;
 }
 
-// Load all alerts from alerts data
+// Load all alerts from IndexedDB
 function loadAllAlerts() {
-	try {
-		// Clear existing alerts
-		chart.data.datasets[1].data = [];
+	if (!db) return;
 
-		// Add all alerts from alertsData
-		alertsData.forEach((alert) => {
-			const alertTime = new Date(alert.date);
-			const formattedTime = `${alertTime.getHours().toString().padStart(2, '0')}:${alertTime.getMinutes().toString().padStart(2, '0')}:${alertTime.getSeconds().toString().padStart(2, '0')}`;
+	const transaction = db.transaction(['alerts'], 'readonly');
+	const store = transaction.objectStore('alerts');
+	const request = store.getAll();
 
-			const baseTP = Number(alert.tp);
-			const offset =
-				alert.direction && alert.direction.toLowerCase() === "long"
-					? 2.0
-					: -2.0;
+	request.onsuccess = () => {
+		const alerts = request.result;
+		// Also load alerts from alertsData array
+		const combinedAlerts = [...alerts, ...alertsData];
 
-			const alertData = {
-				x: formattedTime,
-				y: baseTP + offset,
-				tp: baseTP,
-				tf: alert.tf || "N/A",
-				direction: alert.direction || "N/A",
-				date: alert.date,
-			};
+		console.log('Combined alerts:', combinedAlerts);
 
-			chart.data.datasets[1].data.push(alertData);
-		});
+		// Remove duplicates based on date
+		const uniqueAlerts = Array.from(new Map(combinedAlerts.map(alert => [alert.date, alert])).values());
 
-		// Sort alerts by time
-		chart.data.datasets[1].data.sort(
-			(a, b) => new Date(a.date) - new Date(b.date)
-		);
+		if (uniqueAlerts.length > 0) {
+			// Clear existing alerts from chart
+			chart.data.datasets[1].data = [];
 
-		// Save to localStorage and update chart
-		saveChartData();
+			uniqueAlerts.forEach((alert) => {
+				// Pass true to shift time back by 1 hour for alerts
+				const formattedTime = formatTimeForChart(alert.date, true);
+				const baseTP = Number(alert.tp);
+				const offset = alert.direction && alert.direction.toLowerCase() === "long" ? -2.0 : 2.0;
+
+				const alertData = {
+					x: formattedTime,
+					y: baseTP + offset,
+					tp: baseTP,
+					tf: alert.tf || "N/A",
+					direction: alert.direction || "N/A",
+					date: alert.date,
+				};
+
+				console.log('Processing alert:', alertData);
+				chart.data.datasets[1].data.push(alertData);
+			});
+
+			// Sort alerts by time
+			chart.data.datasets[1].data.sort((a, b) => new Date(a.date) - new Date(b.date));
+			chart.update();
+		}
+	};
+}
+
+// Function to add new alert
+function addAlert(alertData) {
+	if (!alertData.date || !alertData.tp) {
+		console.error('Invalid alert data:', alertData);
+		return;
+	}
+
+	// Pass true to shift time back by 1 hour for alerts
+	const formattedTime = formatTimeForChart(alertData.date, true);
+	const baseTP = Number(alertData.tp);
+	const offset = alertData.direction && alertData.direction.toLowerCase() === "long" ? -2.0 : 2.0;
+
+	const chartAlertData = {
+		x: formattedTime,
+		y: baseTP + offset,
+		tp: baseTP,
+		tf: alertData.tf || "N/A",
+		direction: alertData.direction || "N/A",
+		date: alertData.date,
+	};
+
+	console.log('Adding alert:', chartAlertData);
+
+	// Check if alert already exists in chart
+	const exists = chart.data.datasets[1].data.some(existing => existing.date === alertData.date);
+	if (!exists) {
+		chart.data.datasets[1].data.push(chartAlertData);
+		chart.data.datasets[1].data.sort((a, b) => new Date(a.date) - new Date(b.date));
 		chart.update();
-	} catch (error) {
-		console.error('Error loading alerts:', error);
+
+		// Save to IndexedDB
+		saveAlert(alertData);
 	}
 }
 
-// Initialize in the correct order
-loadAllAlerts(); // Load alerts first
-loadSavedData(); // Then load any saved data
-chart.update(); // Make sure chart is updated
+// WebSocket connection for new alerts
+const alertSocket = new WebSocket('ws://localhost:3000');
+alertSocket.onmessage = (event) => {
+	try {
+		const alertData = JSON.parse(event.data);
+		addAlert(alertData);
+	} catch (error) {
+		console.error('Error processing WebSocket alert:', error);
+	}
+};
 
 let lastMinute = new Date().getMinutes();
 let currentMinutePrices = [];
 let lastFetchTime = 0;
-
-// Fetch and process new alerts
-async function fetchNewAlerts() {
-	try {
-		const response = await fetch(
-			"https://3c77-2a04-ee41-2-e136-7815-1a3c-10d5-15fe.ngrok-free.app/alerts"
-		);
-		const data = await response.json();
-
-		if (data.alerts && Array.isArray(data.alerts)) {
-			chart.data.datasets[1].data = [];
-			data.alerts.forEach((alert) => {
-				addAlertToChart(alert);
-			});
-			saveChartData();
-			chart.update();
-		}
-	} catch (error) {
-		console.error("Error fetching alerts:", error);
-	}
-}
-
-function addAlertToChart(alert) {
-	try {
-		if (alert.tp) {
-			const alertTime = new Date(alert.date);
-			const formattedTime = `${alertTime.getHours().toString().padStart(2, '0')}:${alertTime.getMinutes().toString().padStart(2, '0')}:${alertTime.getSeconds().toString().padStart(2, '0')}`;
-
-			const baseTP = Number(alert.tp);
-			const offset =
-				alert.direction && alert.direction.toLowerCase() === "long"
-					? 2.0
-					: -2.0;
-
-			const alertData = {
-				x: formattedTime,
-				y: baseTP + offset,
-				tp: baseTP,
-				tf: alert.tf || "N/A",
-				direction: alert.direction || "N/A",
-				date: alert.date,
-			};
-
-			chart.data.datasets[1].data.push(alertData);
-			chart.data.datasets[1].data.sort(
-				(a, b) => new Date(a.date) - new Date(b.date)
-			);
-			chart.update();
-		}
-	} catch (error) {
-		console.error("Error adding alert to chart:", error, alert);
-	}
-}
-
-function updateChart(price, timestamp) {
-	const currentMinute = new Date(timestamp).getMinutes();
-
-	if (currentMinute !== lastMinute) {
-		const avgPrice =
-			currentMinutePrices.reduce((a, b) => a + b, 0) /
-			currentMinutePrices.length;
-		const timeStr = new Date(timestamp).toLocaleTimeString();
-
-		chart.data.labels.push(timeStr);
-		chart.data.datasets[0].data.push(avgPrice);
-
-		if (chart.data.labels.length > 10080) {
-			chart.data.labels.shift();
-			chart.data.datasets[0].data.shift();
-			const oldestTime = new Date(timestamp);
-			oldestTime.setDate(oldestTime.getDate() - 7);
-			chart.data.datasets[1].data = chart.data.datasets[1].data.filter(
-				(alert) => new Date(alert.date) > oldestTime
-			);
-		}
-
-		chart.update();
-		saveChartData();
-		currentMinutePrices = [price];
-		lastMinute = currentMinute;
-	} else {
-		currentMinutePrices.push(price);
-	}
-}
 
 // WebSocket connection
 const currentPriceDiv = document.getElementById("currentPrice");
@@ -458,7 +409,7 @@ ws.onmessage = (event) => {
 	const trade = JSON.parse(event.data);
 	if (trade.type === "match") {
 		const price = parseFloat(trade.price);
-		currentPriceDiv.innerHTML = `SOL/USD Binance: $${price.toFixed(2)}`;
+		currentPriceDiv.innerHTML = `SOL/USD Coinbase: $${price.toFixed(2)}`;
 		updateChart(price, trade.time);
 	}
 };
@@ -468,9 +419,6 @@ ws.onclose = () => console.log("WebSocket connection closed");
 
 // Save data periodically
 setInterval(saveChartData, 60000);
-
-// Fetch new alerts periodically
-setInterval(fetchNewAlerts, 30000);
 
 // Zoom control functions
 function updateZoom() {
@@ -595,3 +543,37 @@ window.addEventListener("load", () => {
 		}
 	}
 });
+
+// Update chart function to use consistent time format
+function updateChart(price, timestamp) {
+	const currentMinute = new Date(timestamp).getMinutes();
+
+	if (currentMinute !== lastMinute) {
+		const avgPrice = currentMinutePrices.reduce((a, b) => a + b, 0) / currentMinutePrices.length;
+		const timeStr = formatTimeForChart(timestamp);
+
+		const pricePoint = {
+			time: timestamp,
+			price: avgPrice,
+			formattedTime: timeStr
+		};
+
+		// Save to IndexedDB
+		savePriceData(pricePoint);
+
+		// Update chart
+		chart.data.labels.push(timeStr);
+		chart.data.datasets[0].data.push(avgPrice);
+
+		if (chart.data.labels.length > 10080) {
+			chart.data.labels.shift();
+			chart.data.datasets[0].data.shift();
+		}
+
+		chart.update();
+		currentMinutePrices = [price];
+		lastMinute = currentMinute;
+	} else {
+		currentMinutePrices.push(price);
+	}
+}
