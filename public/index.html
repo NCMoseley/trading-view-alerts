@@ -5,55 +5,95 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/2.0.1/chartjs-plugin-zoom.min.js"></script>
     <style>
+      body {
+        background-color: #1a1a1a;
+        color: #ffffff;
+      }
+
       .current-price {
         font-size: 32px;
         font-weight: bold;
         text-align: center;
         margin: 20px 0;
-        color: #2c3e50;
+        color: grey; /* Bright green for price */
       }
+
       .chart-container {
         width: 800px;
         height: 400px;
         margin: 0 auto;
+        background-color: #242424;
+        padding: 20px;
+        border-radius: 8px;
       }
+
       .controls {
         width: 800px;
         margin: 20px auto;
         padding: 15px;
-        background: #f7f9fc;
+        background: #242424;
         border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
       }
+
       .slider-container {
         margin: 10px 0;
       }
+
       .slider-label {
         display: inline-block;
         width: 100px;
         margin-right: 10px;
+        color: #ffffff;
       }
+
       .slider {
         width: 300px;
         margin-right: 10px;
+        background: #333;
       }
+
+      input[type="number"] {
+        background: #333;
+        border: 1px solid #444;
+        color: #ffffff;
+        padding: 5px;
+        border-radius: 4px;
+      }
+
       button {
         padding: 8px 16px;
         margin: 10px 5px;
         cursor: pointer;
-        background-color: #2c3e50;
-        color: white;
+        background-color: grey;
+        color: #1a1a1a;
         border: none;
         border-radius: 4px;
+        font-weight: bold;
       }
+
       button:hover {
-        background-color: #34495e;
+        background-color: #00cc6f;
       }
     </style>
   </head>
   <body>
     <div id="currentPrice" class="current-price"></div>
-    <h1>SOL-USD Price Chart (1 Minute Intervals)</h1>
     <div class="controls">
+      <div class="slider-container">
+        <span class="slider-label">Overall Zoom:</span>
+        <input
+          type="range"
+          id="overallZoomSlider"
+          class="slider"
+          min="0.1"
+          max="5"
+          step="0.1"
+          value="1"
+          oninput="updateZoom()"
+        />
+        <span id="overallZoomValue">1.0x</span>
+      </div>
       <div class="slider-container">
         <span class="slider-label">X Zoom:</span>
         <input
@@ -75,12 +115,33 @@
           id="yZoomSlider"
           class="slider"
           min="0.1"
-          max="5"
+          max="200"
           step="0.1"
           value="1"
           oninput="updateZoom()"
         />
         <span id="yZoomValue">1.0x</span>
+      </div>
+      <div class="slider-container">
+        <span class="slider-label">Y Range:</span>
+        <input
+          type="number"
+          id="yMin"
+          placeholder="Min"
+          value="230"
+          step="0.0001"
+          style="width: 100px; margin-right: 10px"
+          oninput="updateYRange()"
+        />
+        <input
+          type="number"
+          id="yMax"
+          placeholder="Max"
+          value="290"
+          step="0.0001"
+          style="width: 100px"
+          oninput="updateYRange()"
+        />
       </div>
       <button onclick="resetZoom()">Reset Zoom</button>
     </div>
@@ -88,291 +149,7 @@
       <canvas id="priceChart"></canvas>
     </div>
 
-    <script>
-      // Initialize the chart with two datasets
-      const ctx = document.getElementById("priceChart").getContext("2d");
-      const chart = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: [],
-          datasets: [
-            {
-              label: "SOL-USD Price",
-              data: [],
-              borderColor: "rgb(75, 192, 192)",
-              tension: 0.1,
-            },
-            {
-              label: "Alerts",
-              data: [],
-              backgroundColor: "red",
-              pointStyle: "triangle",
-              pointRadius: 8,
-              showLine: false,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: {
-              min: 100,
-              max: 400,
-              beginAtZero: false,
-              ticks: {
-                stepSize: 50, // Add this to create cleaner y-axis intervals
-              },
-            },
-            x: {
-              type: "category",
-              display: true,
-              ticks: {
-                maxRotation: 45, // Rotate labels for better readability
-              },
-            },
-          },
-          animation: {
-            duration: 0,
-          },
-          plugins: {
-            tooltip: {
-              callbacks: {
-                label: function (context) {
-                  if (context.datasetIndex === 1) {
-                    const alert = context.raw;
-                    return `${alert.tf} | ${alert.direction} | TP: ${
-                      alert.tp
-                    } | ${new Date(alert.date).toLocaleString()}`;
-                  }
-                  return `Price: $${context.raw}`;
-                },
-              },
-            },
-            zoom: {
-              pan: {
-                enabled: true,
-                mode: "xy",
-                modifierKey: "ctrl",
-              },
-              zoom: {
-                wheel: {
-                  enabled: true,
-                  modifierKey: "ctrl",
-                },
-                pinch: {
-                  enabled: true,
-                },
-                mode: "xy",
-                drag: {
-                  enabled: true,
-                  backgroundColor: "rgba(44,62,80,0.3)",
-                },
-                limits: {
-                  y: { min: 0, max: 500 },
-                },
-              },
-              limits: {
-                y: { min: 0, max: 500 },
-              },
-            },
-          },
-        },
-      });
-
-      // Load saved data from localStorage
-      function loadSavedData() {
-        try {
-          const savedData = JSON.parse(
-            localStorage.getItem("chartData") || "{}"
-          );
-          if (savedData.labels) {
-            chart.data.labels = savedData.labels;
-            chart.data.datasets[0].data = savedData.priceData;
-            chart.data.datasets[1].data = savedData.alertData;
-            chart.update();
-          }
-        } catch (error) {
-          console.error("Error loading saved data:", error);
-        }
-      }
-
-      // Save data to localStorage
-      function saveChartData() {
-        try {
-          const dataToSave = {
-            labels: chart.data.labels,
-            priceData: chart.data.datasets[0].data,
-            alertData: chart.data.datasets[1].data,
-            timestamp: new Date().getTime(),
-          };
-          localStorage.setItem("chartData", JSON.stringify(dataToSave));
-        } catch (error) {
-          console.error("Error saving data:", error);
-        }
-      }
-
-      // Load saved data on page load
-      loadSavedData();
-
-      let lastMinute = new Date().getMinutes();
-      let currentMinutePrices = [];
-
-      function addAlertToChart(alert) {
-        try {
-          if (alert.tp) {
-            const alertTime = alert.received_at
-              ? new Date(alert.received_at)
-              : new Date();
-
-            // Format date to match the chart's time format
-            const formattedTime = alertTime.toLocaleTimeString();
-
-            chart.data.datasets[1].data.push({
-              x: formattedTime, // This will position the alert at the correct time on x-axis
-              y: parseFloat(alert.tp), // This will position the alert at the TP price on y-axis
-              tp: alert.tp,
-              tf: alert.tf || "N/A",
-              direction: alert.direction || "N/A",
-              date: alertTime,
-            });
-
-            // Sort alerts by time
-            chart.data.datasets[1].data.sort(
-              (a, b) => new Date(a.date) - new Date(b.date)
-            );
-
-            chart.update();
-            saveChartData(); // Save after adding alert
-          }
-        } catch (error) {
-          console.error("Error adding alert to chart:", error, alert);
-        }
-      }
-
-      fetch(
-        "https://3c77-2a04-ee41-2-e136-7815-1a3c-10d5-15fe.ngrok-free.app/alerts"
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.alerts && Array.isArray(data.alerts)) {
-            data.alerts.forEach((alert) => {
-              addAlertToChart(alert);
-            });
-          }
-        })
-        .catch((error) => console.error("Error:", error));
-
-      const currentPriceDiv = document.getElementById("currentPrice");
-      const ws = new WebSocket("wss://ws-feed.exchange.coinbase.com");
-
-      function updateChart(price, timestamp) {
-        const currentMinute = new Date(timestamp).getMinutes();
-
-        if (currentMinute !== lastMinute) {
-          const avgPrice =
-            currentMinutePrices.reduce((a, b) => a + b, 0) /
-            currentMinutePrices.length;
-          const timeStr = new Date(timestamp).toLocaleTimeString();
-
-          chart.data.labels.push(timeStr);
-          chart.data.datasets[0].data.push(avgPrice);
-
-          // Keep 1 week of minute data (7 days * 24 hours * 60 minutes = 10080 minutes)
-          if (chart.data.labels.length > 10080) {
-            chart.data.labels.shift();
-            chart.data.datasets[0].data.shift();
-            const oldestTime = new Date(timestamp);
-            oldestTime.setDate(oldestTime.getDate() - 7); // Set to 7 days ago
-            chart.data.datasets[1].data = chart.data.datasets[1].data.filter(
-              (alert) => new Date(alert.date) > oldestTime
-            );
-          }
-
-          chart.update();
-          saveChartData();
-          currentMinutePrices = [price];
-          lastMinute = currentMinute;
-        } else {
-          currentMinutePrices.push(price);
-        }
-      }
-
-      ws.onopen = () => {
-        console.log("Connected to Coinbase WebSocket");
-        ws.send(
-          JSON.stringify({
-            type: "subscribe",
-            product_ids: ["SOL-USD"],
-            channels: ["matches"],
-          })
-        );
-      };
-
-      ws.onmessage = (event) => {
-        const trade = JSON.parse(event.data);
-        if (trade.type === "match") {
-          const price = parseFloat(trade.price);
-          currentPriceDiv.innerHTML = `Current SOL Price: $${price.toFixed(2)}`;
-          updateChart(price, trade.time);
-        }
-      };
-
-      ws.onerror = (error) => console.error("WebSocket error:", error);
-      ws.onclose = () => console.log("WebSocket connection closed");
-
-      // Save data periodically (every minute)
-      setInterval(saveChartData, 60000);
-
-      // Clean up old data on page load
-      window.addEventListener("load", () => {
-        const savedData = JSON.parse(localStorage.getItem("chartData") || "{}");
-        if (savedData.timestamp) {
-          const oneWeekAgo = new Date().getTime() - 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
-          if (savedData.timestamp < oneWeekAgo) {
-            localStorage.removeItem("chartData");
-          }
-        }
-      });
-
-      // Update the zoom control functions
-      function updateZoom() {
-        const xZoom = parseFloat(document.getElementById("xZoomSlider").value);
-        const yZoom = parseFloat(document.getElementById("yZoomSlider").value);
-
-        document.getElementById("xZoomValue").textContent = `${xZoom.toFixed(
-          1
-        )}x`;
-        document.getElementById("yZoomValue").textContent = `${yZoom.toFixed(
-          1
-        )}x`;
-
-        // Update the chart's zoom level
-        chart.options.scales.y.min = 250 - 150 * yZoom;
-        chart.options.scales.y.max = 250 + 150 * yZoom;
-
-        // Apply X zoom
-        const xScale = chart.scales.x;
-        const range = xScale.max - xScale.min;
-        const center = (xScale.max + xScale.min) / 2;
-        const newRange = range * xZoom;
-
-        xScale.min = center - newRange / 2;
-        xScale.max = center + newRange / 2;
-
-        chart.update();
-      }
-
-      function resetZoom() {
-        document.getElementById("xZoomSlider").value = 1;
-        document.getElementById("yZoomSlider").value = 1;
-        document.getElementById("xZoomValue").textContent = "1.0x";
-        document.getElementById("yZoomValue").textContent = "1.0x";
-
-        // Reset to original ranges
-        chart.options.scales.y.min = 100;
-        chart.options.scales.y.max = 400;
-        chart.resetZoom();
-      }
-    </script>
+    <!-- Load the chart.js script after the DOM is ready -->
+    <script src="chartWithData.js"></script>
   </body>
 </html>
