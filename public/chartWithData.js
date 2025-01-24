@@ -278,14 +278,9 @@ function loadPriceData() {
 	};
 }
 
-// Function to format time consistently in 24-hour format
-function formatTimeForChart(date, shift = false) {
+// Function to format time consistently
+function formatTimeForChart(date) {
 	const d = new Date(date);
-	// For alerts, shift time 1 hour back
-	if (shift) {
-		d.setHours(d.getHours() - 1);
-	}
-	// Ensure 24-hour format with padded zeros
 	const hours = d.getHours().toString().padStart(2, '0');
 	const minutes = d.getMinutes().toString().padStart(2, '0');
 	const seconds = d.getSeconds().toString().padStart(2, '0');
@@ -305,23 +300,19 @@ function loadAllAlerts() {
 		// Also load alerts from alertsData array
 		const combinedAlerts = [...alerts, ...alertsData];
 
-		console.log('Combined alerts:', combinedAlerts);
-
 		// Remove duplicates based on date
 		const uniqueAlerts = Array.from(new Map(combinedAlerts.map(alert => [alert.date, alert])).values());
 
 		if (uniqueAlerts.length > 0) {
 			// Clear existing alerts from chart
-			chart.data.datasets[1].data = [];
+			chart.data.datasets[1].data = new Array(chart.data.labels.length).fill(null);
 
 			uniqueAlerts.forEach((alert) => {
-				// Pass true to shift time back by 1 hour for alerts
-				const formattedTime = formatTimeForChart(alert.date, true);
+				const formattedTime = formatTimeForChart(alert.date);
 				const baseTP = Number(alert.tp);
 				const offset = alert.direction && alert.direction.toLowerCase() === "long" ? -2.0 : 2.0;
 
 				const alertData = {
-					x: formattedTime,
 					y: baseTP + offset,
 					tp: baseTP,
 					tf: alert.tf || "N/A",
@@ -329,12 +320,31 @@ function loadAllAlerts() {
 					date: alert.date,
 				};
 
-				console.log('Processing alert:', alertData);
-				chart.data.datasets[1].data.push(alertData);
+				// Find the index where this alert should be inserted
+				const alertTime = formattedTime;
+				let insertIndex = chart.data.labels.indexOf(alertTime);
+
+				if (insertIndex === -1) {
+					// If the exact time isn't found, find the closest time
+					const times = chart.data.labels.map(label => {
+						const [hours, minutes, seconds] = label.split(':').map(Number);
+						return hours * 3600 + minutes * 60 + seconds;
+					});
+
+					const alertTimeParts = alertTime.split(':').map(Number);
+					const alertSeconds = alertTimeParts[0] * 3600 + alertTimeParts[1] * 60 + alertTimeParts[2];
+
+					// Find the closest time
+					insertIndex = times.findIndex(time => time >= alertSeconds);
+					if (insertIndex === -1) insertIndex = chart.data.labels.length - 1;
+				}
+
+				// Add the alert at the correct position
+				if (insertIndex >= 0 && insertIndex < chart.data.labels.length) {
+					chart.data.datasets[1].data[insertIndex] = alertData;
+				}
 			});
 
-			// Sort alerts by time
-			chart.data.datasets[1].data.sort((a, b) => new Date(a.date) - new Date(b.date));
 			chart.update();
 		}
 	};
@@ -347,13 +357,12 @@ function addAlert(alertData) {
 		return;
 	}
 
-	// Pass true to shift time back by 1 hour for alerts
-	const formattedTime = formatTimeForChart(alertData.date, true);
+	const formattedTime = formatTimeForChart(alertData.date);
 	const baseTP = Number(alertData.tp);
 	const offset = alertData.direction && alertData.direction.toLowerCase() === "long" ? -2.0 : 2.0;
 
+	// Create alert data in the same format as price data
 	const chartAlertData = {
-		x: formattedTime,
 		y: baseTP + offset,
 		tp: baseTP,
 		tf: alertData.tf || "N/A",
@@ -361,13 +370,30 @@ function addAlert(alertData) {
 		date: alertData.date,
 	};
 
-	console.log('Adding alert:', chartAlertData);
-
 	// Check if alert already exists in chart
 	const exists = chart.data.datasets[1].data.some(existing => existing.date === alertData.date);
 	if (!exists) {
-		chart.data.datasets[1].data.push(chartAlertData);
-		chart.data.datasets[1].data.sort((a, b) => new Date(a.date) - new Date(b.date));
+		// Find the index where this alert should be inserted in the labels array
+		const alertTime = formattedTime;
+		let insertIndex = chart.data.labels.indexOf(alertTime);
+
+		if (insertIndex === -1) {
+			// If the exact time isn't found, find the closest time
+			const times = chart.data.labels.map(label => {
+				const [hours, minutes, seconds] = label.split(':').map(Number);
+				return hours * 3600 + minutes * 60 + seconds;
+			});
+
+			const alertTimeParts = alertTime.split(':').map(Number);
+			const alertSeconds = alertTimeParts[0] * 3600 + alertTimeParts[1] * 60 + alertTimeParts[2];
+
+			// Find the closest time
+			insertIndex = times.findIndex(time => time >= alertSeconds);
+			if (insertIndex === -1) insertIndex = chart.data.labels.length;
+		}
+
+		// Add the alert at the correct position
+		chart.data.datasets[1].data[insertIndex] = chartAlertData;
 		chart.update();
 
 		// Save to IndexedDB
@@ -544,7 +570,7 @@ window.addEventListener("load", () => {
 	}
 });
 
-// Update chart function to use consistent time format
+// Update chart function
 function updateChart(price, timestamp) {
 	const currentMinute = new Date(timestamp).getMinutes();
 

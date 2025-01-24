@@ -133,5 +133,23 @@
     "tp": "264.11",
     "date": "2025-01-24T17:54:00+0000",
     "situation": "1v1"
+  },
+  {
+    "symbol": "SOLUSD",
+    "tf": "5m",
+    "direction": "Short",
+    "price": "263.89",
+    "tp": "263.77",
+    "date": "2025-01-24T18:25:10+0000",
+    "situation": "1v1"
+  },
+  {
+    "symbol": "SOLUSDT.P",
+    "tf": "3m",
+    "direction": "",
+    "price": "263.88",
+    "tp": "264.06",
+    "date": "2025-01-24T18:27:00+0000",
+    "situation": "1v1"
   }
 ]
